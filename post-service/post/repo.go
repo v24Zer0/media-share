@@ -1,5 +1,7 @@
 package post
 
 type Repo interface {
-	getPosts()
+	GetPosts()
+	CreatePost(post *Post)
+	DeletePost(id string)
 }
