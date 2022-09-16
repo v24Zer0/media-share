@@ -1,5 +1,9 @@
 package post
 
+import "github.com/gin-gonic/gin"
+
 type Handler interface {
-	getPosts()
+	GetPosts(c *gin.Context)
+	CreatePost(c *gin.Context)
+	DeletePost(c *gin.Context)
 }
