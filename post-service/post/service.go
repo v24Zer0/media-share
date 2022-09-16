@@ -1,5 +1,7 @@
 package post
 
 type Service interface {
-	getPosts()
+	GetPosts()
+	CreatePost(post *Post) error
+	DeletePost(id string) error
 }
