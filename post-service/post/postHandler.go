@@ -12,18 +12,18 @@ func NewPostHandler(service Service) *PostHandler {
 	}
 }
 
-func (h PostHandler) GetPosts(c *gin.Context) {
-	h.service.GetPosts()
+func (handler PostHandler) GetPosts(c *gin.Context) {
+	handler.service.GetPosts()
 }
 
-func (h PostHandler) CreatePost(c *gin.Context) {
+func (handler PostHandler) CreatePost(c *gin.Context) {
 	post := &Post{}
 
-	h.service.CreatePost(post)
+	handler.service.CreatePost(post)
 }
 
-func (h PostHandler) DeletePost(c *gin.Context) {
+func (handler PostHandler) DeletePost(c *gin.Context) {
 	id := ""
 
-	h.service.DeletePost(id)
+	handler.service.DeletePost(id)
 }
