@@ -1,7 +1,7 @@
 package post
 
 type Repo interface {
-	GetPosts()
-	CreatePost(post *Post)
-	DeletePost(id string)
+	GetPosts() (*[]Post, error)
+	CreatePost(post *Post) error
+	DeletePost(id string) error
 }
