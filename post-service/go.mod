@@ -2,7 +2,10 @@ module github.com/v24Zer0/media-share/post-service
 
 go 1.18
 
-require github.com/gin-gonic/gin v1.8.1
+require (
+	github.com/gin-gonic/gin v1.8.1
+	github.com/segmentio/ksuid v1.0.4
+)
 
 require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
