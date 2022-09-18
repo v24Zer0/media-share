@@ -1,42 +1,60 @@
 package mock
 
-import "github.com/v24Zer0/media-share/post-service/post"
+import (
+	"github.com/v24Zer0/media-share/post-service/post"
+	"github.com/v24Zer0/media-share/post-service/user"
+)
 
 var posts []post.Post = []post.Post{
 	{
 		ID:        "1",
-		Title:     "Title3",
+		Title:     "Post title 1",
 		CreatedAt: "",
-		CreatedBy: "User1",
-		ImageID:   "img_id1",
+		CreatedBy: user.User{
+			ID:       "0001",
+			Username: "user1",
+		},
+		ImageID: "img_id1",
 	},
 	{
 		ID:        "2",
-		Title:     "",
+		Title:     "Post title 2",
 		CreatedAt: "",
-		CreatedBy: "User2",
-		ImageID:   "img_id2",
+		CreatedBy: user.User{
+			ID:       "0001",
+			Username: "user1",
+		},
+		ImageID: "img_id2",
 	},
 	{
 		ID:        "3",
-		Title:     "",
+		Title:     "Post title 3",
 		CreatedAt: "",
-		CreatedBy: "User3",
-		ImageID:   "img_id3",
+		CreatedBy: user.User{
+			ID:       "0001",
+			Username: "user1",
+		},
+		ImageID: "img_id3",
 	},
 	{
 		ID:        "4",
-		Title:     "",
+		Title:     "Post title 4",
 		CreatedAt: "",
-		CreatedBy: "User4",
-		ImageID:   "img_id4",
+		CreatedBy: user.User{
+			ID:       "0002",
+			Username: "user2",
+		},
+		ImageID: "img_id4",
 	},
 	{
 		ID:        "5",
-		Title:     "",
+		Title:     "Post title 5",
 		CreatedAt: "",
-		CreatedBy: "User5",
-		ImageID:   "img_id5",
+		CreatedBy: user.User{
+			ID:       "0002",
+			Username: "user2",
+		},
+		ImageID: "img_id5",
 	},
 }
 

@@ -7,14 +7,14 @@ import (
 )
 
 type PostService struct {
-	repo Repo
-	util util.Util
+	repo       Repo
+	idProvider util.IDProvider
 }
 
-func NewPostService(repo Repo, util util.Util) *PostService {
+func NewPostService(repo Repo, idProvider util.IDProvider) *PostService {
 	return &PostService{
-		repo: repo,
-		util: util,
+		repo:       repo,
+		idProvider: idProvider,
 	}
 }
 
@@ -27,8 +27,7 @@ func (service PostService) CreatePost(post *Post) error {
 	// 		check title, createdBy
 
 	// generate post id
-	id := service.util.GenerateID()
-	post.ID = id
+	post.ID = service.idProvider.GenerateID()
 
 	err := service.repo.CreatePost(post)
 	if err != nil {
