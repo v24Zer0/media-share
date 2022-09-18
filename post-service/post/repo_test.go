@@ -6,7 +6,6 @@ import (
 
 	"github.com/v24Zer0/media-share/post-service/mock"
 	"github.com/v24Zer0/media-share/post-service/post"
-	"github.com/v24Zer0/media-share/post-service/user"
 )
 
 type MockRepo struct {
@@ -54,13 +53,11 @@ func TestCreatePost(t *testing.T) {
 	repo := NewMockRepo()
 	post := post.Post{
 		ID:        "6",
-		Title:     "",
+		Title:     "Title 1",
 		CreatedAt: "",
-		CreatedBy: user.User{
-			ID:       "0001",
-			Username: "user1",
-		},
-		ImageID: "",
+		UserID:    "0001",
+		CreatedBy: "user1",
+		ImageID:   "",
 	}
 
 	// Valid CreatePost()
