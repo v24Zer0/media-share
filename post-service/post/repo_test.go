@@ -18,7 +18,7 @@ func NewMockRepo() *MockRepo {
 	}
 }
 
-func (repo MockRepo) GetPosts() (*[]post.Post, error) {
+func (repo MockRepo) GetPosts(userID string) (*[]post.Post, error) {
 	return &repo.posts, nil
 }
 
@@ -42,14 +42,11 @@ func (repo MockRepo) DeletePost(id string) error {
 	return errors.New("failed to delete post")
 }
 
-func TestNewPostRepo(t *testing.T) {
-}
-
-func TestGetPosts(t *testing.T) {
+func TestRepoGetPosts(t *testing.T) {
 
 }
 
-func TestCreatePost(t *testing.T) {
+func TestRepoCreatePost(t *testing.T) {
 	repo := NewMockRepo()
 	post := post.Post{
 		ID:        "6",
@@ -57,7 +54,6 @@ func TestCreatePost(t *testing.T) {
 		CreatedAt: "",
 		UserID:    "0001",
 		CreatedBy: "user1",
-		ImageID:   "",
 	}
 
 	// Valid CreatePost()
@@ -72,6 +68,6 @@ func TestCreatePost(t *testing.T) {
 	// err = repo.CreatePost(&post)
 }
 
-func TestDeletePost(t *testing.T) {
+func TestRepoDeletePost(t *testing.T) {
 
 }

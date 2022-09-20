@@ -14,13 +14,10 @@ func NewPostRepo(db *gorm.DB) *PostRepo {
 	}
 }
 
-func (repo PostRepo) GetPosts() (*[]Post, error) {
+func (repo PostRepo) GetPosts(userID string) (*[]Post, error) {
 	posts := []Post{}
-	res := repo.db.Find(&posts, Post{ID: ""})
-	if res.Error != nil {
-		return &[]Post{}, res.Error
-	}
-	return &posts, nil
+	res := repo.db.Find(&posts, Post{UserID: userID})
+	return &posts, res.Error
 }
 
 func (repo PostRepo) CreatePost(post *Post) error {
