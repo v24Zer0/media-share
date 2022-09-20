@@ -6,5 +6,4 @@ type Post struct {
 	CreatedAt string `json:"createdAt"`
 	UserID    string `json:"userId"`
 	CreatedBy string `json:"createdBy"`
-	ImageID   string `json:"imageID"`
 }

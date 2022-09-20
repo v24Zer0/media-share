@@ -11,7 +11,6 @@ var posts []post.Post = []post.Post{
 		CreatedAt: "",
 		UserID:    "0001",
 		CreatedBy: "user1",
-		ImageID:   "img_id1",
 	},
 	{
 		ID:        "2",
@@ -19,7 +18,6 @@ var posts []post.Post = []post.Post{
 		CreatedAt: "",
 		UserID:    "0001",
 		CreatedBy: "user1",
-		ImageID:   "img_id2",
 	},
 	{
 		ID:        "3",
@@ -27,7 +25,6 @@ var posts []post.Post = []post.Post{
 		CreatedAt: "",
 		UserID:    "0001",
 		CreatedBy: "user1",
-		ImageID:   "img_id3",
 	},
 	{
 		ID:        "4",
@@ -35,7 +32,6 @@ var posts []post.Post = []post.Post{
 		CreatedAt: "",
 		UserID:    "0002",
 		CreatedBy: "user2",
-		ImageID:   "img_id4",
 	},
 	{
 		ID:        "5",
@@ -43,7 +39,6 @@ var posts []post.Post = []post.Post{
 		CreatedAt: "",
 		UserID:    "0002",
 		CreatedBy: "user2",
-		ImageID:   "img_id5",
 	},
 }
 
