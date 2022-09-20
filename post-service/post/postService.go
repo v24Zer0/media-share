@@ -2,6 +2,7 @@ package post
 
 import (
 	"errors"
+	"time"
 
 	"github.com/v24Zer0/media-share/post-service/util"
 )
@@ -19,12 +20,19 @@ func NewPostService(repo Repo, idProvider util.IDProvider) *PostService {
 }
 
 func (service PostService) GetPosts() (*[]Post, error) {
-	return service.repo.GetPosts()
+	userID := ""
+	return service.repo.GetPosts(userID)
 }
 
 func (service PostService) CreatePost(post *Post) error {
-	// validate post data:
-	// 		check title, createdBy
+	// validate post data: title, userID, createdBy
+	if post.Title == "" || post.UserID == "" || post.CreatedBy == "" {
+		return errors.New("missing field")
+	}
+
+	if post.CreatedAt == "" {
+		post.CreatedAt = time.Now().String()
+	}
 
 	// generate post id
 	post.ID = service.idProvider.GenerateID()
@@ -37,7 +45,11 @@ func (service PostService) CreatePost(post *Post) error {
 }
 
 func (service PostService) DeletePost(id string) error {
-	// validate post data: id, createdBy
+	// validate post data: id
+	if id == "" {
+		return errors.New("missing field")
+	}
+
 	err := service.repo.DeletePost(id)
 	if err != nil {
 		return errors.New("failed to delete post")
