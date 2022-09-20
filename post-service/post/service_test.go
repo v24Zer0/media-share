@@ -1,7 +1,17 @@
 package post_test
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestNewPostService(t *testing.T) {
+func TestServiceGetPosts(t *testing.T) {
+
+}
+
+func TestServiceCreatePost(t *testing.T) {
+
+}
+
+func TestServiceDeletePost(t *testing.T) {
 
 }
