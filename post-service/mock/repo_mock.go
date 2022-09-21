@@ -17,7 +17,14 @@ func NewMockRepo() *MockRepo {
 }
 
 func (repo MockRepo) GetPosts(userID string) (*[]post.Post, error) {
-	return &repo.posts, nil
+	var res []post.Post
+
+	for _, p := range repo.posts {
+		if p.UserID == userID {
+			res = append(res, p)
+		}
+	}
+	return &res, nil
 }
 
 func (repo MockRepo) CreatePost(post *post.Post) error {
