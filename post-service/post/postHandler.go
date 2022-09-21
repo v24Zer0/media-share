@@ -13,7 +13,7 @@ func NewPostHandler(service Service) *PostHandler {
 }
 
 func (handler PostHandler) GetPosts(c *gin.Context) {
-	handler.service.GetPosts()
+	handler.service.GetPosts("")
 }
 
 func (handler PostHandler) CreatePost(c *gin.Context) {

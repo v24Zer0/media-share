@@ -19,8 +19,7 @@ func NewPostService(repo Repo, idProvider util.IDProvider) *PostService {
 	}
 }
 
-func (service PostService) GetPosts() (*[]Post, error) {
-	userID := ""
+func (service PostService) GetPosts(userID string) (*[]Post, error) {
 	return service.repo.GetPosts(userID)
 }
 

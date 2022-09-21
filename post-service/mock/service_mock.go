@@ -5,7 +5,7 @@ import "github.com/v24Zer0/media-share/post-service/post"
 type MockService struct {
 }
 
-func GetPosts() (*[]post.Post, error) {
+func GetPosts(userID string) (*[]post.Post, error) {
 	return &[]post.Post{}, nil
 }
 
