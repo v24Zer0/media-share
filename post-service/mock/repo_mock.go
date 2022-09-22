@@ -17,7 +17,7 @@ func NewMockRepo() *MockRepo {
 }
 
 func (repo MockRepo) GetPosts(userID string) (*[]post.Post, error) {
-	var res []post.Post
+	res := []post.Post{}
 
 	for _, p := range repo.posts {
 		if p.UserID == userID {
