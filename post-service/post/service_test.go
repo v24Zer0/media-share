@@ -15,14 +15,18 @@ func TestServiceGetPosts(t *testing.T) {
 
 	userID := "0001"
 	posts, _ := service.GetPosts(userID)
-	if len(*posts) != 3 {
-		t.Fatalf("Posts for user(%s) not returned", userID)
+	for _, p := range *posts {
+		if p.UserID != userID {
+			t.Fatalf("Posts for user(%s) not returned", userID)
+		}
 	}
 
 	userID = "0002"
 	posts, _ = service.GetPosts(userID)
-	if len(*posts) != 2 {
-		t.Fatalf("Posts for user(%s) not returned", userID)
+	for _, p := range *posts {
+		if p.UserID != userID {
+			t.Fatalf("Posts for user(%s) not returned", userID)
+		}
 	}
 }
 

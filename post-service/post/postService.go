@@ -20,6 +20,9 @@ func NewPostService(repo Repo, idProvider util.IDProvider) *PostService {
 }
 
 func (service PostService) GetPosts(userID string) (*[]Post, error) {
+	if userID == "" {
+		return &[]Post{}, errors.New("missing userID")
+	}
 	return service.repo.GetPosts(userID)
 }
 
