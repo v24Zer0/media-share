@@ -13,17 +13,40 @@ func NewPostHandler(service Service) *PostHandler {
 }
 
 func (handler PostHandler) GetPosts(c *gin.Context) {
-	handler.service.GetPosts("")
+	userID, ok := c.Params.Get("userID")
+	if !ok {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	posts, err := handler.service.GetPosts(userID)
+	if err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	c.JSON(200, posts)
 }
 
 func (handler PostHandler) CreatePost(c *gin.Context) {
-	post := &Post{}
+	post := Post{}
+	c.ShouldBindJSON(&post)
 
-	handler.service.CreatePost(post)
+	err := handler.service.CreatePost(&post)
+	if err != nil {
+		return
+	}
+
+	c.Status(201)
 }
 
 func (handler PostHandler) DeletePost(c *gin.Context) {
 	id := ""
 
-	handler.service.DeletePost(id)
+	err := handler.service.DeletePost(id)
+	if err != nil {
+		return
+	}
+
+	c.Status(201)
 }
