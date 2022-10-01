@@ -46,7 +46,7 @@ func (repo PostRepo) CreatePost(post *Post) error {
 	return res.Error
 }
 
-func (repo PostRepo) DeletePost(id string) error {
-	res := repo.db.Delete(&Post{ID: id})
+func (repo PostRepo) DeletePost(post *Post) error {
+	res := repo.db.Delete(post)
 	return res.Error
 }

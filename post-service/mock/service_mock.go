@@ -34,10 +34,10 @@ func (service MockService) CreatePost(post *post.Post) error {
 	return service.repo.CreatePost(post)
 }
 
-func (service MockService) DeletePost(id string) error {
-	if id == "" {
+func (service MockService) DeletePost(post *post.Post) error {
+	if post.ID == "" || post.UserID == "" {
 		return errors.New("missing field")
 	}
 
-	return service.repo.DeletePost(id)
+	return service.repo.DeletePost(post)
 }

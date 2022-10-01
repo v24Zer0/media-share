@@ -37,9 +37,9 @@ func (repo MockRepo) CreatePost(post *post.Post) error {
 	return nil
 }
 
-func (repo MockRepo) DeletePost(id string) error {
+func (repo MockRepo) DeletePost(post *post.Post) error {
 	for _, p := range repo.posts {
-		if p.ID == id {
+		if p.ID == post.ID && p.UserID == post.UserID {
 			return nil
 		}
 	}

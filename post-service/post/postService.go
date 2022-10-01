@@ -46,13 +46,13 @@ func (service PostService) CreatePost(post *Post) error {
 	return nil
 }
 
-func (service PostService) DeletePost(id string) error {
+func (service PostService) DeletePost(post *Post) error {
 	// validate post data: id
-	if id == "" {
+	if post.ID == "" || post.UserID == "" {
 		return errors.New("missing field")
 	}
 
-	err := service.repo.DeletePost(id)
+	err := service.repo.DeletePost(post)
 	if err != nil {
 		return errors.New("failed to delete post")
 	}
