@@ -30,10 +30,15 @@ func (handler PostHandler) GetPosts(c *gin.Context) {
 
 func (handler PostHandler) CreatePost(c *gin.Context) {
 	post := Post{}
-	c.ShouldBindJSON(&post)
-
-	err := handler.service.CreatePost(&post)
+	err := c.ShouldBindJSON(&post)
 	if err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	err = handler.service.CreatePost(&post)
+	if err != nil {
+		c.AbortWithStatus(400)
 		return
 	}
 
@@ -41,12 +46,18 @@ func (handler PostHandler) CreatePost(c *gin.Context) {
 }
 
 func (handler PostHandler) DeletePost(c *gin.Context) {
-	id := ""
-
-	err := handler.service.DeletePost(id)
+	post := Post{}
+	err := c.ShouldBindJSON(&post)
 	if err != nil {
+		c.AbortWithStatus(400)
 		return
 	}
 
-	c.Status(201)
+	err = handler.service.DeletePost(&post)
+	if err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	c.Status(200)
 }
