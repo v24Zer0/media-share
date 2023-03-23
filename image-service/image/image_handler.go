@@ -5,10 +5,10 @@ import (
 )
 
 type ImageHandler struct {
-	service *Service
+	service Service
 }
 
-func NewImageHandler(service *Service) *ImageHandler {
+func NewImageHandler(service Service) *ImageHandler {
 	return &ImageHandler{
 		service: service,
 	}
