@@ -36,12 +36,7 @@ func (handler ImageHandler) CreateImage(ctx *gin.Context) {
 		ctx.AbortWithStatus(400)
 	}
 
-	file, err := fileHeader.Open()
-	if err != nil {
-		ctx.AbortWithStatus(400)
-	}
-
-	handler.service.CreateImage(postID, file)
+	handler.service.CreateImage(postID, fileHeader)
 }
 
 func (handler ImageHandler) DeleteImage(ctx *gin.Context) {
