@@ -29,7 +29,7 @@ func (service ImageService) GetImage(postID string) ([]byte, error) {
 	return []byte{}, nil
 }
 
-func (service ImageService) CreateImage(postID string, fileHeader *multipart.FileHeader) error {
+func (service ImageService) CreateImage(postID string, file multipart.File, filename string) error {
 	id := service.idProvider.GenerateID()
 	// path := create new image path
 
@@ -41,13 +41,6 @@ func (service ImageService) CreateImage(postID string, fileHeader *multipart.Fil
 
 	// Verify file adheres to format (no malicious filename)
 	// Verify file is correct format
-
-	filename := fileHeader.Filename
-
-	file, err := fileHeader.Open()
-	if err != nil {
-		return err
-	}
 
 	// fileBytes := []byte{}
 	// file.Read(fileBytes)
