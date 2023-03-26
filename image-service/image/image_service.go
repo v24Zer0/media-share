@@ -2,6 +2,7 @@ package image
 
 import (
 	"mime/multipart"
+	"os"
 
 	"github.com/v24Zer0/media-share/image-service/util"
 )
@@ -30,26 +31,47 @@ func (service ImageService) GetImage(postID string) ([]byte, error) {
 }
 
 func (service ImageService) CreateImage(postID string, file multipart.File, filename string) error {
+	// Verify file adheres to format (no malicious filename)
+	// Verify file is correct format
+	err := ValidateFile(filename)
+	if err != nil {
+		return err
+	}
+
 	id := service.idProvider.GenerateID()
-	// path := create new image path
+	path := service.idProvider.GenerateFileID()
 
 	image := &Image{
 		ID:     id,
-		Path:   "",
+		Path:   path,
 		PostID: postID,
 	}
 
-	// Verify file adheres to format (no malicious filename)
-	// Verify file is correct format
-
-	// fileBytes := []byte{}
-	// file.Read(fileBytes)
-	// defer file.Close()
+	fileBytes := []byte{}
+	file.Read(fileBytes)
+	defer file.Close()
 
 	service.repo.CreateImage(image)
+
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+
+	f.Write(fileBytes)
+	f.Close()
+
 	return nil
 }
 
 func (service ImageService) DeleteImage(postID string) error {
 	return nil
+}
+
+func ValidateFile(filename string) error {
+	return nil
+}
+
+func GetFileExtension(filename string) (string, error) {
+	return "", nil
 }
