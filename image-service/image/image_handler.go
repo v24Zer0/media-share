@@ -25,6 +25,7 @@ func (handler ImageHandler) GetImage(ctx *gin.Context) {
 		ctx.AbortWithStatus(400)
 	}
 
+	ctx.Status(200)
 	ctx.Writer.Write(b)
 }
 

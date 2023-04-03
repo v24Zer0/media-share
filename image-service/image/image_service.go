@@ -1,6 +1,7 @@
 package image
 
 import (
+	"io/ioutil"
 	"mime/multipart"
 	"os"
 
@@ -20,19 +21,20 @@ func NewImageService(repo Repo, idProvider util.IDProvider) *ImageService {
 }
 
 func (service ImageService) GetImage(postID string) ([]byte, error) {
-	// Return image as bytes written to conttext Writer
-	// b, err := ioutil.ReadFileutil
-	// if err != nil {
-	// 	panic(err)
-	// }
+	imagePath, err := service.repo.GetImage(postID)
+	if err != nil {
+		return nil, err
+	}
 
-	// ctx.Writer.Write(b)
-	return []byte{}, nil
+	b, err := ioutil.ReadFile(imagePath)
+	if err != nil {
+		return nil, err
+	}
+
+	return b, nil
 }
 
 func (service ImageService) CreateImage(postID string, file multipart.File, filename string) error {
-	// Verify file adheres to format (no malicious filename)
-	// Verify file is correct format
 	err := ValidateFile(filename)
 	if err != nil {
 		return err
