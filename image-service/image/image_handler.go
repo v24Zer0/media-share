@@ -1,6 +1,8 @@
 package image
 
 import (
+	"encoding/json"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +32,6 @@ func (handler ImageHandler) GetImage(ctx *gin.Context) {
 }
 
 func (handler ImageHandler) CreateImage(ctx *gin.Context) {
-	// Create image in DB and store image in created path
 	postID := ctx.PostForm("postID")
 	fileHeader, err := ctx.FormFile("image")
 	if err != nil {
@@ -42,9 +43,25 @@ func (handler ImageHandler) CreateImage(ctx *gin.Context) {
 		ctx.AbortWithStatus(400)
 	}
 
-	handler.service.CreateImage(postID, file, fileHeader.Filename)
+	err = handler.service.CreateImage(postID, file, fileHeader.Filename)
+	if err != nil {
+		ctx.AbortWithError(400, err)
+	}
 }
 
 func (handler ImageHandler) DeleteImage(ctx *gin.Context) {
 	// Delete image from DB and delete image from file system
+
+	var imageRequest ImageRequest
+
+	decoder := json.NewDecoder(ctx.Request.Body)
+	err := decoder.Decode(&imageRequest)
+	if err != nil {
+		ctx.AbortWithStatus(400)
+	}
+
+	err = handler.service.DeleteImage(imageRequest.PostID)
+	if err != nil {
+		ctx.AbortWithError(400, err)
+	}
 }
