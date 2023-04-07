@@ -15,6 +15,7 @@ public class TokenController {
 
     @GetMapping("/")
     public TokenResponse getToken() {
-        return this.tokenService.getToken();
+        String token = this.tokenService.getToken();
+        return new TokenResponse(token, "user");
     }
 }

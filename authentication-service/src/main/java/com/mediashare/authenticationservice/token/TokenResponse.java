@@ -1,8 +1,8 @@
 package com.mediashare.authenticationservice.token;
 
 public class TokenResponse {
-    String token;
-    String userID;
+    private String token;
+    private String userID;
 
     public TokenResponse(String token, String userID) {
         this.token = token;
