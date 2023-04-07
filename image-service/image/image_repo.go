@@ -37,16 +37,17 @@ func NewImageRepo() *ImageRepo {
 }
 
 func (repo ImageRepo) GetImage(postID string) (string, error) {
-	repo.db.First(&Image{PostID: postID})
-	return "", nil
+	image := &Image{PostID: postID}
+	res := repo.db.First(image)
+	return image.Path, res.Error
 }
 
-func (repo ImageRepo) CreateImage(image *Image) (*Image, error) {
-	repo.db.Create(image)
-	return image, nil
+func (repo ImageRepo) CreateImage(image *Image) error {
+	res := repo.db.Create(image)
+	return res.Error
 }
 
-func (repo ImageRepo) DeleteImage(postID string) (*Image, error) {
-	repo.db.Delete(&Image{PostID: postID})
-	return &Image{}, nil
+func (repo ImageRepo) DeleteImage(postID string) error {
+	res := repo.db.Delete(&Image{PostID: postID})
+	return res.Error
 }

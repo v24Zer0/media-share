@@ -1,6 +1,8 @@
 package image
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"mime/multipart"
 	"os"
@@ -41,7 +43,12 @@ func (service ImageService) CreateImage(postID string, file multipart.File, file
 	}
 
 	id := service.idProvider.GenerateID()
-	path := service.idProvider.GenerateFileID()
+	if id == "" {
+		return errors.New("error creating image id")
+	}
+
+	extension := GetFileExtension(filename)
+	path := CreateFilePath(id, extension)
 
 	image := &Image{
 		ID:     id,
@@ -53,7 +60,10 @@ func (service ImageService) CreateImage(postID string, file multipart.File, file
 	file.Read(fileBytes)
 	defer file.Close()
 
-	service.repo.CreateImage(image)
+	err = service.repo.CreateImage(image)
+	if err != nil {
+		return err
+	}
 
 	f, err := os.Create(path)
 	if err != nil {
@@ -67,13 +77,27 @@ func (service ImageService) CreateImage(postID string, file multipart.File, file
 }
 
 func (service ImageService) DeleteImage(postID string) error {
+	err := service.repo.DeleteImage(postID)
+	if err != nil {
+		return err
+	}
+
+	err = os.Remove("")
+	if err != nil {
+		return errors.New("error deleting file")
+	}
+
 	return nil
+}
+
+func CreateFilePath(id string, extension string) string {
+	return fmt.Sprintf("%s.%s", id, extension)
 }
 
 func ValidateFile(filename string) error {
 	return nil
 }
 
-func GetFileExtension(filename string) (string, error) {
-	return "", nil
+func GetFileExtension(filename string) string {
+	return ""
 }
