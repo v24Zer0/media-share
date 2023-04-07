@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TokenController {
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     @Autowired
     public TokenController(TokenService tokenService) {
@@ -14,7 +14,7 @@ public class TokenController {
     }
 
     @GetMapping("/")
-    public String Hello() {
-        return "Hello";
+    public TokenResponse getToken() {
+        return this.tokenService.getToken();
     }
 }
