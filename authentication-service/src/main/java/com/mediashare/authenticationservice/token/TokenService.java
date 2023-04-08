@@ -1,8 +1,10 @@
 package com.mediashare.authenticationservice.token;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,5 +17,14 @@ public class TokenService {
         } catch (JWTCreationException exception) {
             return "";
         }
+    }
+
+    public void verifyToken(String token) {
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withClaim("user", "userid")
+                .build();
+
+        DecodedJWT decodedJWT = verifier.verify(token);
     }
 }
