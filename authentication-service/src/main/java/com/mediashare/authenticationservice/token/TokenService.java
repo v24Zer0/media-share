@@ -1,30 +1,6 @@
 package com.mediashare.authenticationservice.token;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.stereotype.Service;
-
-@Service
-public class TokenService {
-
-    public String getToken() {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            return JWT.create().withClaim("user", "userID").sign(algorithm);
-        } catch (JWTCreationException exception) {
-            return "";
-        }
-    }
-
-    public void verifyToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        JWTVerifier verifier = JWT.require(algorithm)
-                .withClaim("user", "userid")
-                .build();
-
-        DecodedJWT decodedJWT = verifier.verify(token);
-    }
+public interface TokenService {
+    String createToken(String userID);
+    boolean verifyToken(String token);
 }
