@@ -1,11 +1,8 @@
 package com.mediashare.authenticationservice.token;
 
-public class TokenResponse {
+public class TokenVerifyRequest {
     private String token;
 
-    public TokenResponse(String token) {
-        this.token = token;
-    }
     public String getToken() {
         return token;
     }
