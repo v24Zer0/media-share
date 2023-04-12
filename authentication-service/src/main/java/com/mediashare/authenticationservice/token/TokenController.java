@@ -1,5 +1,7 @@
 package com.mediashare.authenticationservice.token;
 
+import com.mediashare.authenticationservice.exceptions.BadRequestException;
+import com.mediashare.authenticationservice.exceptions.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +17,29 @@ public class TokenController {
 
     @PostMapping("/")
     public TokenResponse createToken(@RequestBody TokenRequest tokenRequest) {
-//        verify RequestBody (Check that userID valid)
         if(tokenRequest.getUserID().equals("")) {
-            return null;
+            throw new BadRequestException("invalid userID");
         }
 
+//        Check for valid userID (uuid or ksuid)
+
         String token = this.tokenService.createToken(tokenRequest.getUserID());
+        if(token.equals("")) {
+            throw new BadRequestException("could not create token");
+        }
+
         return new TokenResponse(token);
     }
 
     @PostMapping("/verify")
     public void verifyToken(@RequestBody TokenVerifyRequest tokenVerifyRequest) {
-        boolean res = this.tokenService.verifyToken(tokenVerifyRequest.getToken());
+        if(tokenVerifyRequest.getToken().equals("")) {
+            throw new BadRequestException("invalid token");
+        }
+
+        boolean ok = this.tokenService.verifyToken(tokenVerifyRequest.getToken());
+        if(!ok) {
+            throw new ForbiddenException("could not verify token");
+        }
     }
 }
