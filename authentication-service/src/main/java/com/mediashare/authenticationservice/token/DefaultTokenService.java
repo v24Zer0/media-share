@@ -5,8 +5,11 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class DefaultTokenService implements TokenService {
@@ -32,6 +35,10 @@ public class DefaultTokenService implements TokenService {
         }
 
 //      Check user claim is present and non-empty
-        return !decodedJWT.getClaim("user").asString().equals("");
+        Map<String, Claim> claims = decodedJWT.getClaims();
+        if(!claims.containsKey("user"))
+            return false;
+
+        return !claims.get("user").asString().equals("");
     }
 }
