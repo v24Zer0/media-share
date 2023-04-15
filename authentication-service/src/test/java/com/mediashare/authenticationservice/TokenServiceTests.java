@@ -19,7 +19,7 @@ public class TokenServiceTests {
     @Test
     @DisplayName("Should successfully create token with user claim matching given userID")
     public void testCreateToken() {
-        String token = this.tokenService.createToken("user_01");
+        String token = this.tokenService.createToken("c73bcdcc-2669-4bf6-81d3-e4ae73fb11fd");
         assertThat(token).isNotEqualTo("");
 //        check that returned token is a valid jwt
     }
@@ -28,6 +28,13 @@ public class TokenServiceTests {
     @DisplayName("Should fail to create token with JWTException thrown")
     public void testCreateTokenWithJWTCreationException() {
 
+    }
+
+    @Test
+    @DisplayName("Should fail to create token with invalid userID")
+    public void testCreateTokenWithInvalidUserID() {
+        String token = this.tokenService.createToken("c73bcdcc26694bf681d3e4ae73fb11fd");
+        assertThat(token).isEqualTo("");
     }
 
     @Test

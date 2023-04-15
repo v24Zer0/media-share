@@ -63,7 +63,7 @@ public class TokenControllerTests {
     }
 
     @Test
-    @DisplayName("Should fail to verify token with ForbiddenException")
+    @DisplayName("Should fail to verify token with BadRequestException")
     public void testVerifyTokenWithForbiddenException() {
         Exception e = assertThrows(ForbiddenException.class, () ->
                 this.tokenController.verifyToken(new TokenVerifyRequest("invalid_token")));
