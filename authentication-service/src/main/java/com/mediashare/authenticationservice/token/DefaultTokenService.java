@@ -32,9 +32,6 @@ public class DefaultTokenService implements TokenService {
         }
 
 //      Check user claim is present and non-empty
-        if(decodedJWT.getClaim("user").asString().equals("")) {
-            return false;
-        }
-        return true;
+        return !decodedJWT.getClaim("user").asString().equals("");
     }
 }
