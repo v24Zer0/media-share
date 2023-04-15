@@ -28,7 +28,6 @@ public class DefaultTokenService implements TokenService {
         try {
             decodedJWT = verifier.verify(token);
         } catch(JWTVerificationException exception) {
-            System.out.println("Failed to verify token");
             return false;
         }
 

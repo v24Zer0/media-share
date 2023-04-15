@@ -15,7 +15,7 @@ public class TokenController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public TokenResponse createToken(@RequestBody TokenRequest tokenRequest) {
         if(tokenRequest.getUserID().equals("")) {
             throw new BadRequestException("invalid userID");
