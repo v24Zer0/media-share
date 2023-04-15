@@ -21,8 +21,6 @@ public class TokenController {
             throw new BadRequestException("invalid userID");
         }
 
-//        Check for valid userID (uuid or ksuid)
-
         String token = this.tokenService.createToken(tokenRequest.getUserID());
         if(token.equals("")) {
             throw new BadRequestException("could not create token");

@@ -7,14 +7,25 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.mediashare.authenticationservice.util.UUIDRegex;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
 public class DefaultTokenService implements TokenService {
+    private final UUIDRegex uuidRegex;
+
+    public DefaultTokenService() {
+        this.uuidRegex = new UUIDRegex();
+    }
 
     public String createToken(String userID) {
+//        Check for valid userID (uuid or ksuid)
+        if(!this.uuidRegex.validateID(userID)) {
+            return "";
+        }
+
         try {
             Algorithm algorithm = Algorithm.HMAC256("secret");
             return JWT.create().withClaim("user", userID).sign(algorithm);
