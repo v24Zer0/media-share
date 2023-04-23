@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"os"
+	"regexp"
+	"strings"
 
 	"github.com/v24Zer0/media-share/image-service/util"
 )
@@ -30,7 +32,7 @@ func (service ImageService) GetImage(postID string) ([]byte, error) {
 
 	b, err := ioutil.ReadFile(imagePath)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("failed to read file")
 	}
 
 	return b, nil
@@ -48,6 +50,10 @@ func (service ImageService) CreateImage(postID string, file multipart.File, file
 	}
 
 	extension := GetFileExtension(filename)
+	if extension == "" {
+		return errors.New("failed to get extension")
+	}
+
 	path := CreateFilePath(id, extension)
 
 	image := &Image{
@@ -91,13 +97,28 @@ func (service ImageService) DeleteImage(postID string) error {
 }
 
 func CreateFilePath(id string, extension string) string {
-	return fmt.Sprintf("%s.%s", id, extension)
+	return fmt.Sprintf("upload/images/%s.%s", id, extension)
 }
 
 func ValidateFile(filename string) error {
+	regex, err := regexp.Compile(`^([a-zA-Z0-9\s_.\\/\-\(\):])+(.jpe?g|.png|.pdf)$`)
+	if err != nil {
+		return errors.New("failed to compile regex")
+	}
+
+	ok := regex.MatchString(filename)
+	if !ok {
+		return errors.New("invalid filename")
+	}
 	return nil
 }
 
 func GetFileExtension(filename string) string {
-	return ""
+	splitString := strings.Split(filename, ".")
+	if len(splitString) == 1 {
+		return ""
+	}
+
+	extension := splitString[len(splitString)-1]
+	return extension
 }
