@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"mime/multipart"
 	"os"
 	"regexp"
 	"strings"
@@ -38,12 +37,7 @@ func (service ImageService) GetImage(postID string) ([]byte, error) {
 	return b, nil
 }
 
-func (service ImageService) CreateImage(postID string, file multipart.File, filename string) error {
-	err := ValidateFile(filename)
-	if err != nil {
-		return err
-	}
-
+func (service ImageService) CreateImage(postID string, fileBytes []byte, filename string) error {
 	id := service.idProvider.GenerateID()
 	if id == "" {
 		return errors.New("error creating image id")
@@ -62,11 +56,7 @@ func (service ImageService) CreateImage(postID string, file multipart.File, file
 		PostID: postID,
 	}
 
-	fileBytes := []byte{}
-	file.Read(fileBytes)
-	defer file.Close()
-
-	err = service.repo.CreateImage(image)
+	err := service.repo.CreateImage(image)
 	if err != nil {
 		return err
 	}
@@ -88,7 +78,7 @@ func (service ImageService) DeleteImage(postID string) error {
 		return err
 	}
 
-	err = os.Remove("")
+	err = os.Remove("path_to_image")
 	if err != nil {
 		return errors.New("error deleting file")
 	}
