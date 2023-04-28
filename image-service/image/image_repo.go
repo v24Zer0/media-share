@@ -47,7 +47,8 @@ func (repo ImageRepo) CreateImage(image *Image) error {
 	return res.Error
 }
 
-func (repo ImageRepo) DeleteImage(postID string) error {
-	res := repo.db.Delete(&Image{PostID: postID})
-	return res.Error
+func (repo ImageRepo) DeleteImage(postID string) (string, error) {
+	image := Image{PostID: postID}
+	res := repo.db.Delete(&image)
+	return image.PostID, res.Error
 }
