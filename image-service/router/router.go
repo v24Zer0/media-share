@@ -12,7 +12,7 @@ func NewRouter(handler image.Handler) *gin.Engine {
 
 	r.GET("/image/:postID", handler.GetImage)
 	r.POST("/image", handler.CreateImage)
-	r.DELETE("/image", handler.DeleteImage)
+	// r.DELETE("/image", handler.DeleteImage)
 
 	return r
 }
