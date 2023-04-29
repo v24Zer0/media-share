@@ -3,7 +3,6 @@ package image
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -29,7 +28,7 @@ func (service ImageService) GetImage(postID string) ([]byte, error) {
 		return nil, err
 	}
 
-	b, err := ioutil.ReadFile(imagePath)
+	b, err := os.ReadFile(imagePath)
 	if err != nil {
 		return nil, errors.New("failed to read file")
 	}
@@ -41,6 +40,11 @@ func (service ImageService) CreateImage(postID string, fileBytes []byte, filenam
 	id := service.idProvider.GenerateID()
 	if id == "" {
 		return errors.New("error creating image id")
+	}
+
+	err := ValidateFile(filename)
+	if err != nil {
+		return errors.New("invalid filename format")
 	}
 
 	extension := GetFileExtension(filename)
@@ -56,7 +60,7 @@ func (service ImageService) CreateImage(postID string, fileBytes []byte, filenam
 		PostID: postID,
 	}
 
-	err := service.repo.CreateImage(image)
+	err = service.repo.CreateImage(image)
 	if err != nil {
 		return err
 	}
@@ -73,12 +77,12 @@ func (service ImageService) CreateImage(postID string, fileBytes []byte, filenam
 }
 
 func (service ImageService) DeleteImage(postID string) error {
-	err := service.repo.DeleteImage(postID)
+	path, err := service.repo.DeleteImage(postID)
 	if err != nil {
 		return err
 	}
 
-	err = os.Remove("path_to_image")
+	err = os.Remove(path)
 	if err != nil {
 		return errors.New("error deleting file")
 	}
@@ -91,7 +95,7 @@ func CreateFilePath(id string, extension string) string {
 }
 
 func ValidateFile(filename string) error {
-	regex, err := regexp.Compile(`^([a-zA-Z0-9\s_.\\/\-\(\):])+(.jpe?g|.png|.pdf)$`)
+	regex, err := regexp.Compile(`^([a-zA-Z0-9\s_.\\/\-\(\):])+(.jpe?g|.png|.gif)$`)
 	if err != nil {
 		return errors.New("failed to compile regex")
 	}
