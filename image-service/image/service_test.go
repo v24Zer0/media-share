@@ -3,6 +3,7 @@ package image_test
 import (
 	"bytes"
 	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/v24Zer0/media-share/image-service/image"
@@ -31,7 +32,7 @@ func TestService_GetImage(t *testing.T) {
 }
 
 func TestService_GetImageWithUnknownPostImage(t *testing.T) {
-	service := image.NewImageService(&mock.MockRepo{}, &util.DefaultProvider{})
+	service := image.NewImageService(mock.NewMockRepo(), &util.DefaultProvider{})
 
 	_, err := service.GetImage("post_04")
 	if err == nil {
@@ -39,14 +40,81 @@ func TestService_GetImageWithUnknownPostImage(t *testing.T) {
 	}
 }
 
-func TestService_CreateImage(t *testing.T) {
-	// service := image.NewImageService(&mock.MockRepo{}, &util.DefaultProvider{})
+func TestService_GetImageWithInvalidPathToImage(t *testing.T) {
+	service := image.NewImageService(mock.NewMockRepo(), &util.DefaultProvider{})
 
+	_, err := service.GetImage("post_00")
+	if err == nil {
+		t.Fatal("No error when retrieving image with invalid path")
+	}
+}
+
+func TestService_CreateImage(t *testing.T) {
+	service := image.NewImageService(mock.NewMockRepo(), &mock.MockIDProvider{})
+
+	err := service.CreateImage("post_04", mockImage, "mock_image_00.jpg")
+	if err != nil {
+		t.Fatal("Error when creating valid image")
+	}
+
+	// Validate created image exists in directory
+	_, err = os.Stat("upload/images/mock-image-id-00.jpg")
+	if err != nil {
+		t.Fatal("Image not found in directory")
+	}
+
+	RestoreStateAfterCreate()
+}
+
+func TestService_CreateImageWithInvalidPostID(t *testing.T) {
+	service := image.NewImageService(mock.NewMockRepo(), &mock.MockIDProvider{})
+
+	err := service.CreateImage("post_00", mockImage, "mock_image_00.jpg")
+	if err == nil {
+		t.Fatal("Failed to return error for image with invalid postID")
+	}
+
+	RestoreStateAfterCreate()
+}
+
+func TestService_CreateImageWithInvalidFilename(t *testing.T) {
+	service := image.NewImageService(mock.NewMockRepo(), &mock.MockIDProvider{})
+
+	err := service.CreateImage("post_01", mockImage, "mock_image_00.pdf")
+	if err == nil {
+		t.Fatal("Failed to return error for image with invalid filaname")
+	}
+
+	RestoreStateAfterCreate()
+}
+
+func TestService_CreateImageWithInvalidFileExtension(t *testing.T) {
+	service := image.NewImageService(mock.NewMockRepo(), &mock.MockIDProvider{})
+
+	err := service.CreateImage("post_04", mockImage, "mock_image_00")
+	if err == nil {
+		t.Fatal("Failed to return error for image with invalid file extension")
+	}
+
+	RestoreStateAfterCreate()
 }
 
 func TestService_DeleteImage(t *testing.T) {
-	// service := image.NewImageService(&mock.MockRepo{}, &util.DefaultProvider{})
+	// service := image.NewImageService(mock.NewMockRepo(), &util.DefaultProvider{})
 
+	// err := service.DeleteImage("post_01")
+	// if err != nil {
+	// 	t.Fatal("Failed to delete valid image")
+	// }
+}
+
+func TestService_DeleteImageWithInvalidPostID(t *testing.T) {
+	// service := image.NewImageService(mock.NewMockRepo(), &util.DefaultProvider{})
+
+	// err := service.DeleteImage("post_04")
+	// if err == nil {
+	// 	t.Fatal("Failed to return error for invalid postID")
+	// }
 }
 
 func TestCreateFilePath(t *testing.T) {
@@ -75,17 +143,17 @@ func TestValidateFile(t *testing.T) {
 
 func TestValidateFileWithInvalidFileName(t *testing.T) {
 	err := image.ValidateFile("file.pdf")
-	if err != nil {
+	if err == nil {
 		t.Fatal("Failed to validate a valid filename")
 	}
 
-	err = image.ValidateFile("/file.png")
-	if err != nil {
+	err = image.ValidateFile(";file.png")
+	if err == nil {
 		t.Fatal("Failed to validate a valid filename")
 	}
 
-	err = image.ValidateFile("\\file.pdf")
-	if err != nil {
+	err = image.ValidateFile("file.tiff")
+	if err == nil {
 		t.Fatal("Failed to validate a valid filename")
 	}
 }
