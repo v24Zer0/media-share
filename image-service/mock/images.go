@@ -18,4 +18,9 @@ var images = []image.Image{
 		Path:   "upload/images/02f0d331-3ed1-43cc-8f88-0eb4b9501d8c.jpeg",
 		PostID: "post_03",
 	},
+	{
+		ID:     "invalid-path-mock-image",
+		Path:   "upload/images/invalid_path_to_image.png",
+		PostID: "post_00",
+	},
 }

@@ -26,18 +26,19 @@ func (repo *MockRepo) GetImage(postID string) (string, error) {
 }
 
 func (repo *MockRepo) CreateImage(image *image.Image) error {
+	if image.PostID == "post_00" {
+		return errors.New("invalid postID")
+	}
+
 	repo.mockImages = append(repo.mockImages, *image)
 	return nil
 }
 
-func (repo *MockRepo) DeleteImage(postID string) error {
-	newImages := []image.Image{}
+func (repo *MockRepo) DeleteImage(postID string) (string, error) {
 	for _, img := range repo.mockImages {
 		if img.PostID == postID {
-			continue
+			return img.Path, nil
 		}
-		newImages = append(newImages, img)
 	}
-	repo.mockImages = newImages
-	return nil
+	return "", errors.New("no record found")
 }
